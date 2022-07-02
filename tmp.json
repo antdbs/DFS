@@ -1,0 +1,6 @@
+{
+    "error_code": 106,
+    "error": "Try any of:'\/locate' '\/route' '\/height' '\/sources_to_targets' '\/optimized_route' '\/isochrone' '\/trace_route' '\/trace_attributes' '\/transit_available' '\/expansion' '\/centroid' '\/status' ",
+    "status_code": 404,
+    "status": "Not Found"
+}

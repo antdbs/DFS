@@ -1,0 +1,6 @@
+
+# 2 point très éloignés de Paris
+Point de départ: 48.849442, 2.261198
+Point de d'arriver: 48.872787, 2.408092
+
+Url à utiliser: localhost:8002/route?json={"locations":[{"lat":48.849442,"lon":2.261198},{"lat":48.872787,"lon":2.408092}],"costing":"auto","directions_options":{"units":"km"}}
