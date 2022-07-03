@@ -1,146 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!--    <style>
-        @import url('https://fonts.googleapis.com/css?family=Inconsolata:700');
-
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        html, body {
-          width: 100%;
-          height: 100%;
-        }
-
-        body {
-          background: #252525;
-        }
-
-        .container {
-            position: absolute;
-            margin: auto;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 300px;
-            height: 100px;
-        }
-
-        .search {
-            position: absolute;
-            margin: auto;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            width: 80px;
-            height: 80px;
-            background: crimson;
-            border-radius: 50%;
-            transition: all 1s;
-            z-index: 4;
-            box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.4);
-        }
-        .search:hover {
-            cursor: pointer;
-        }
-        .search::before {
-          content: "";
-          position: absolute;
-          margin: auto;
-          top: 22px;
-          right: 0;
-          bottom: 0;
-          left: 22px;
-          width: 12px;
-          height: 2px;
-          background: white;
-          transform: rotate(45deg);
-          transition: all .5s;
-        }
-        .search::after {
-          content: "";
-          position: absolute;
-          margin: auto;
-          top: -5px;
-          right: 0;
-          bottom: 0;
-          left: -5px;
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          border: 2px solid white;
-          transition: all .5s;
-        }
-        input {
-          font-family: 'Inconsolata', monospace;
-          position: absolute;
-          margin: auto;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          width: 50px;
-          height: 50px;
-          outline: none;
-          border: none;
-          /*border-bottom: 1px solid rgba(255, 255, 255, 0.2);*/
-          background: crimson;
-          color: white;
-          text-shadow: 0 0 10px crimson;
-          padding: 0 80px 0 20px;
-          border-radius: 30px;
-          box-shadow: 0 0 25px 0 crimson,
-          0 20px 25px 0 rgba(0, 0, 0, 0.2);
-          /*box-shadow: inset 0 0 25px 0 rgba(0, 0, 0, 0.5);*/
-          transition: all 1s;
-          opacity: 0;
-          z-index: 5;
-          font-weight: bolder;
-          letter-spacing: 0.1em;
-        }
-        input:hover {
-            cursor: pointer;
-        }
-        input:focus {
-            width: 300px;
-            opacity: 1;
-            cursor: text;
-        }
-        input:focus ~ .search {
-            right: -250px;
-            background: #151515;
-            z-index: 6;
-        }
-        input::before {
-            top: 0;
-            left: 0;
-            width: 25px;
-        }
-        input::after {
-        top: 0;
-        left: 0;
-        width: 25px;
-        height: 2px;
-        border: none;
-        background: white;
-        border-radius: 0%;
-        transform: rotate(-45deg);
-        }
-        input::placeholder {
-            color: white;
-            opacity: 0.5;
-            font-weight: bolder;
-        }-->
-
     <style>
         body {
             align-items: center;
-            background-color: rgba(17, 16, 16, 0.99);
+            background-color: black;
             display: flex;
             justify-content: center;
             height: 100vh;
@@ -150,9 +14,9 @@
             background-color: #15172b;
             border-radius: 20px;
             box-sizing: border-box;
-            height: 700px;
+            height: 740px;
             padding: 20px;
-            width: 420px;
+            width: 470px;
         }
 
         .title {
@@ -176,6 +40,14 @@
             color: lightgray;
             font-family: sans-serif;
             font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .label {
+            color: #eee;
+            font-family: sans-serif;
+            font-size: 14px;
             font-weight: 600;
             margin-top: 10px;
         }
@@ -236,88 +108,120 @@
 
 <!--    <link rel="stylesheet" type="text/css" href="style.css">-->
 </head>
-<body>$
-    <form class="form">
+<body>
+    <form class="form" action="forward" method="post">
         <div class="title">
-            <h2>Recherche d'itinéraire</h2>
+            <h2>Paris GO</h2>
         </div>
         <div class="description">
             Sélectionner une adresse ainsi que les options souhaitées<br>
             <ul>
+                <li>lieu d'arrivée</li>
                 <li>durée du trajet</li>
-                <li>activité payantes ou non</li>
+                <li>activités payantes ou non</li>
                 <li>type d'activité (facultatif)</li>
             </ul>
         </div>
         <label class="subtitle">
-            <br>Adresse<br>
+            <br>Adresse :<br>
             <input class="input" type="text" name="adresse"/>
         </label><br>
 
-        <label class="subtitle">
-            <br>Durée (en minute)<br>
-            <input class="input" type="number" name="duree"/>
-        </label><br>
+        <table width="100%">
+            <tr>
+                <td>
+                    <label class="subtitle">
+                        <br>Début :<br>
+                        <input class="input" type="datetime-local" name="start_time" value="now" align="left"/>
+                    </label><br>
+                </td>
+                <td>
+                    <label class="subtitle">
+                        <br>Fin :<br>
+                        <input class="input" type="datetime-local" name="end_time" value="00:00" align="right"/>
+                    </label><br>
+                </td>
+            </tr>
+        </table>
+
+
 
         <label class="subtitle">
-            <br>Mot clés<br>
+            <br>Budget :<br>
             <table>
                 <tr>
                     <td>
-                        <input name ="categorie" type="checkbox" id="arts" value="arts">
-                        <label for="arts">Arts</label><br>
-
-                        <input name ="categorie" type="checkbox" id="brocante" value="brocante">
-                        <label for="brocante">Brocante</label><br>
-
-                        <input name ="categorie" type="checkbox" id="humour" value="humour">
-                        <label for="humour">Humour</label><br>
-
-                        <input name ="categorie" type="checkbox" id="sciences" value="sciences">
-                        <label for="sciences">Sciences</label><br>
-
-                        <input name ="categorie" type="checkbox" id="musique" value="musique">
-                        <label for="musique">Musique</label><br>
-
-                        <input name ="categorie" type="checkbox" id="cinema" value="cinema">
-                        <label for="cinema">Cinema</label><br>
-
-                        <input name ="categorie" type="checkbox" id="sport" value="sport">
-                        <label for="sport">Sport</label><br>
-
-                        <input name ="categorie" type="checkbox" id="loisirs" value="loisirs">
-                        <label for="loisirs">Loisirs</label><br>
-
-                        <input name ="categorie" type="checkbox" id="gourmand" value="gourmand">
-                        <label for="gourmand">Gourmand</label><br>
+                        <input type="radio" id="gratuit" name="budget" value="gratuit" checked="checked">
+                        <label class="label" for="gratuit">Gratuit</label>
                     </td>
                     <td>
-                        <input name ="categorie" type="checkbox" id="nature" value="nature">
-                        <label for="nature">Nature</label><br>
+                        <input type="radio" id="payant" name="budget" value="payant">
+                        <label class="label" for="payant">Payant</label>
+                    </td>
+                </tr>
+            </table>
 
-                        <input name ="categorie" type="checkbox" id="histoire" value="histoire">
-                        <label for="histoire">Histoire</label><br>
+        </label>
 
-                        <input name ="categorie" type="checkbox" id="theatre" value="theatre">
-                        <label for="theatre">Théatre</label><br>
+        <label class="subtitle">
+            <br>Mot clés :<br>
+            <table align="center" width="100%">
+                <tr>
+                    <td class="td">
+                        <input name ="arts" type="checkbox" id="arts" value="true">
+                        <label class="label" for="arts">Arts</label><br>
 
-                        <input name ="categorie" type="checkbox" id="expo" value="expo">
-                        <label for="expo">Expo</label><br>
+                        <input name ="brocante" type="checkbox" id="brocante" value="true">
+                        <label class="label" for="brocante">Brocante</label><br>
 
-                        <input name ="categorie" type="checkbox" id="enfants" value="enfants">
-                        <label for="enfants">Enfants</label><br>
+                        <input name ="humour" type="checkbox" id="humour" value="true">
+                        <label class="label" for="humour">Humour</label><br>
 
-                        <input name ="categorie" type="checkbox" id="salon" value="salon">
-                        <label for="salon">Salon</label><br>
+                        <input name ="sciences" type="checkbox" id="sciences" value="true">
+                        <label class="label" for="sciences">Sciences</label><br>
 
-                        <input name ="categorie" type="checkbox" id="clubbing" value="clubbing">
-                        <label for="clubbing">Clubbing</label><br>
+                        <input name ="musique" type="checkbox" id="musique" value="true">
+                        <label class="label" for="musique">Musique</label><br>
 
-                        <input name ="categorie" type="checkbox" id="conference" value="conference">
-                        <label for="conference">Conference</label><br>
+                        <input name ="cinema" type="checkbox" id="cinema" value="true">
+                        <label class="label" for="cinema">Cinema</label><br>
 
-                        <input name ="categorie" type="checkbox" id="autre" value="autre">
-                        <label for="autre">Autre</label><br>
+                        <input name ="sport" type="checkbox" id="sport" value="true">
+                        <label class="label" for="sport">Sport</label><br>
+
+                        <input name ="loisirs" type="checkbox" id="loisirs" value="true">
+                        <label class="label" for="loisirs">Loisirs</label><br>
+
+                        <input name ="gourmand" type="checkbox" id="gourmand" value="true">
+                        <label class="label" for="gourmand">Gourmand</label><br>
+                    </td>
+                    <td class="td">
+                        <input name ="nature" type="checkbox" id="nature" value="true">
+                        <label class="label" for="nature">Nature</label><br>
+
+                        <input name ="histoire" type="checkbox" id="histoire" value="true">
+                        <label class="label" for="histoire">Histoire</label><br>
+
+                        <input name ="theatre" type="checkbox" id="theatre" value="true">
+                        <label class="label" for="theatre">Théatre</label><br>
+
+                        <input name ="expo" type="checkbox" id="expo" value="true">
+                        <label class="label" for="expo">Expo</label><br>
+
+                        <input name ="enfants" type="checkbox" id="enfants" value="true">
+                        <label class="label" for="enfants">Enfants</label><br>
+
+                        <input name ="salon" type="checkbox" id="salon" value="true">
+                        <label class="label" for="salon">Salon</label><br>
+
+                        <input name ="clubbing" type="checkbox" id="clubbing" value="true">
+                        <label class="label" for="clubbing">Clubbing</label><br>
+
+                        <input name ="conference" type="checkbox" id="conference" value="true">
+                        <label class="label" for="conference">Conference</label><br>
+
+                        <input name ="autre" type="checkbox" id="autre" value="true">
+                        <label class="label" for="autre">Autre</label><br>
                     </td>
                 </tr>
             </table>
