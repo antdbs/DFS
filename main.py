@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 ## API flask
 # input: (latitude, longitude)
@@ -17,6 +17,12 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
+    adresse = request.args.get("adresse")
+    duree = request.args.get("duree")
+
+    print(adresse)
+    print(duree)
+
     return render_template('/form.html')
 
 
