@@ -1,6 +1,8 @@
 import requests
 import json
 
+from decoder import *
+
 class Route:
     def __init__(self, starting_point, arrival_point, costing):
         self.starting_point = starting_point
@@ -27,14 +29,19 @@ class Route:
 
         api_url = api_url.replace("'", '"')
 
-        reponse = requests.get(api_url)#.json()
+        reponse = requests.get(api_url)
 
-        return json.dumps(reponse.json(), indent=2)
+        # return str(api_url)
+        return json.loads(json.dumps(reponse.json(), indent=2))
+    
+# result = Route(
+#     starting_point=[48.849442, 2.261198],
+#     arrival_point=[48.872787, 2.408092],
+#     costing="pedestrian"
+# ).get_shortest_path()
 
-print(
-    Route(
-        starting_point=[48.849442, 2.261198],
-        arrival_point=[48.872787, 2.408092],
-        costing="pedestrian"
-    ).get_shortest_path()
-)
+# print(result)
+
+# result = json.loads(result)
+# result = result["trip"]["legs"][0]["shape"]
+# print(decode(result))
