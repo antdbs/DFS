@@ -103,10 +103,26 @@
         }
     </style>
 
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+
+    <script>
+        // This is an example of Leaflet usage; you should modify this for your needs.
+        var map = L.map('map').setView([2.261142, 48.849462], 12);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        var options = {
+          url: "http://localhost:4000/v1/",
+            autocomplete: true
+        }
+        L.control.geocoder(options).addTo(map);
+    </script>-->
+
     <meta charset="UTF-8">
     <title>Formulaire</title>
-
-<!--    <link rel="stylesheet" type="text/css" href="style.css">-->
 </head>
 <body>
     <form class="form" action="forward" method="post">
@@ -124,7 +140,7 @@
         </div>
         <label class="subtitle">
             <br>Adresse :<br>
-            <input class="input" type="text" name="adresse"/>
+            <input class="input" type="text" name="adresse" id="adresse" required/>
         </label><br>
 
         <table width="100%">
@@ -132,13 +148,15 @@
                 <td>
                     <label class="subtitle">
                         <br>Début :<br>
-                        <input class="input" type="datetime-local" name="start_time" value="now" align="left"/>
+                        <input class="input" type="datetime-local" name="start_time" required
+                               align="left" min="2022-01-01T00:00" max="2050-12-30T23:59"/>
                     </label><br>
                 </td>
                 <td>
                     <label class="subtitle">
                         <br>Fin :<br>
-                        <input class="input" type="datetime-local" name="end_time" value="00:00" align="right"/>
+                        <input class="input" type="datetime-local" name="end_time" required
+                               align="right" min="2022-01-01T00:00" max="2050-12-31T23:59"/>
                     </label><br>
                 </td>
             </tr>
