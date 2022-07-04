@@ -2,18 +2,264 @@
 <html lang="en">
 <head>
     <style>
+        body {
+            align-items: center;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+        }
 
+        .form {
+            background-color: #15172b;
+            border-radius: 20px;
+            box-sizing: border-box;
+            height: 830px;
+            padding: 20px;
+            width: 470px;
+        }
 
+        .title {
+            color: white;
+            font-family: sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #eee;
+            font-family: sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .description {
+            color: lightgray;
+            font-family: sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .label {
+            color: #eee;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .input {
+            background-color: #303245;
+            border-radius: 12px;
+            border: 0;
+            box-sizing: border-box;
+            color: #eee;
+            /*font-size: 18px;*/
+            height: 40px;
+            /*outline: 0;*/
+            padding: 4px 20px 0;
+            width: 100%;
+        }
+
+        .input:focus ~ .cut,
+        .input:not(:placeholder-shown) ~ .cut {
+            transform: translateY(8px);
+        }
+
+        .input:focus ~ .placeholder,
+        .input:not(:placeholder-shown) ~ .placeholder {
+            transform: translateY(-30px) translateX(10px) scale(0.75);
+        }
+
+        .input:not(:placeholder-shown) ~ .placeholder {
+            color: #808097;
+        }
+
+        .input:focus ~ .placeholder {
+            color: #dc2f55;
+        }
+
+        .submit {
+            background-color: #08d;
+            border-radius: 12px;
+            border: 0;
+            box-sizing: border-box;
+            color: #eee;
+            cursor: pointer;
+            font-size: 17px;
+            height: 50px;
+            margin-top: 10px;
+            /*// outline: 0;*/
+            text-align: center;
+            width: 100%;
+        }
+
+        .submit:active {
+            background-color: #06b;
+        }
     </style>
+
+    <!--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
+
+    <script>
+        // This is an example of Leaflet usage; you should modify this for your needs.
+        var map = L.map('map').setView([2.261142, 48.849462], 12);
+        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        var options = {
+          url: "http://localhost:4000/v1/",
+            autocomplete: true
+        }
+        L.control.geocoder(options).addTo(map);
+    </script>-->
 
     <meta charset="UTF-8">
     <title>Formulaire</title>
 </head>
 <body>
-    <h1>BITE</h1>
-    <div class="container">
-        <input type="text" placeholder="Search...">
-        <div class="search"></div>
-    </div>
+    <form class="form" action="forward" method="post">
+        <div class="title">
+            <h2>Paris GO</h2>
+        </div>
+        <div class="description">
+            Sélectionner une adresse ainsi que les options souhaitées<br>
+            <ul>
+                <li>lieu d'arrivée</li>
+                <li>durée du trajet</li>
+                <li>mode de transport</li>
+                <li>activités payantes ou non</li>
+                <li>type d'activité (facultatif)</li>
+            </ul>
+        </div>
+        <label class="subtitle">
+            <br>Adresse :<br>
+            <input class="input" type="text" name="adresse" id="adresse" required/>
+        </label><br>
+
+        <table width="100%">
+            <tr>
+                <td>
+                    <label class="subtitle">
+                        <br>Début :<br>
+                        <input class="input" type="datetime-local" name="start_time" required
+                               align="left" min="2022-01-01T00:00" max="2050-12-30T23:59"/>
+                    </label><br>
+                </td>
+                <td>
+                    <label class="subtitle">
+                        <br>Fin :<br>
+                        <input class="input" type="datetime-local" name="end_time" required
+                               align="right" min="2022-01-01T00:00" max="2050-12-31T23:59"/>
+                    </label><br>
+                </td>
+            </tr>
+        </table>
+
+        <label class="subtitle">
+            <br>Mode de transport :<br>
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" id="pied" name="transport" value="pied" checked="checked">
+                        <label class="label" for="pied">A pied</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="voiture" name="transport" value="voiture">
+                        <label class="label" for="voiture">Voiture</label>
+                    </td>
+                </tr>
+            </table>
+        </label>
+
+        <label class="subtitle">
+            <br>Budget :<br>
+            <table>
+                <tr>
+                    <td>
+                        <input type="radio" id="gratuit" name="budget" value="gratuit" checked="checked">
+                        <label class="label" for="gratuit">Gratuit</label>
+                    </td>
+                    <td>
+                        <input type="radio" id="payant" name="budget" value="payant">
+                        <label class="label" for="payant">Payant</label>
+                    </td>
+                </tr>
+            </table>
+        </label>
+
+        <label class="subtitle">
+            <br>Mot clés :<br>
+            <table align="center" width="100%">
+                <tr>
+                    <td class="td">
+                        <input name ="arts" type="checkbox" id="arts" value="true">
+                        <label class="label" for="arts">Arts</label><br>
+
+                        <input name ="brocante" type="checkbox" id="brocante" value="true">
+                        <label class="label" for="brocante">Brocante</label><br>
+
+                        <input name ="humour" type="checkbox" id="humour" value="true">
+                        <label class="label" for="humour">Humour</label><br>
+
+                        <input name ="sciences" type="checkbox" id="sciences" value="true">
+                        <label class="label" for="sciences">Sciences</label><br>
+
+                        <input name ="musique" type="checkbox" id="musique" value="true">
+                        <label class="label" for="musique">Musique</label><br>
+
+                        <input name ="cinema" type="checkbox" id="cinema" value="true">
+                        <label class="label" for="cinema">Cinema</label><br>
+
+                        <input name ="sport" type="checkbox" id="sport" value="true">
+                        <label class="label" for="sport">Sport</label><br>
+
+                        <input name ="loisirs" type="checkbox" id="loisirs" value="true">
+                        <label class="label" for="loisirs">Loisirs</label><br>
+
+                        <input name ="gourmand" type="checkbox" id="gourmand" value="true">
+                        <label class="label" for="gourmand">Gourmand</label><br>
+                    </td>
+                    <td class="td">
+                        <input name ="nature" type="checkbox" id="nature" value="true">
+                        <label class="label" for="nature">Nature</label><br>
+
+                        <input name ="histoire" type="checkbox" id="histoire" value="true">
+                        <label class="label" for="histoire">Histoire</label><br>
+
+                        <input name ="theatre" type="checkbox" id="theatre" value="true">
+                        <label class="label" for="theatre">Théatre</label><br>
+
+                        <input name ="expo" type="checkbox" id="expo" value="true">
+                        <label class="label" for="expo">Expo</label><br>
+
+                        <input name ="enfants" type="checkbox" id="enfants" value="true">
+                        <label class="label" for="enfants">Enfants</label><br>
+
+                        <input name ="salon" type="checkbox" id="salon" value="true">
+                        <label class="label" for="salon">Salon</label><br>
+
+                        <input name ="clubbing" type="checkbox" id="clubbing" value="true">
+                        <label class="label" for="clubbing">Clubbing</label><br>
+
+                        <input name ="conference" type="checkbox" id="conference" value="true">
+                        <label class="label" for="conference">Conference</label><br>
+
+                        <input name ="autre" type="checkbox" id="autre" value="true">
+                        <label class="label" for="autre">Autre</label><br>
+                    </td>
+                </tr>
+            </table>
+        </label>
+        <br>
+        <input class="submit" type="submit" value="Valider"/>
+    </form>
 </body>
 </html>
