@@ -33,10 +33,13 @@ def get_data():
     data = {
         'request_content': [
             {
-                'coordonees': request.form['adresse'],
+                'coordonees_x': '',
+                'coordonees_y': '',
+                'adresse': request.form['adresse'],
                 'date_debut': request.form['start_time'],
                 'date_fin': request.form['end_time'],
                 'budget': request.form['budget'],
+                'type_transport': request.form['transport'],
                 'categories': {
                     'arts': try_categories(request, 'arts'),
                     'brocante': try_categories(request, 'brocante'),
