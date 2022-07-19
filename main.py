@@ -21,6 +21,10 @@ app = Flask(__name__)
 def form():
     return render_template('/form.html')
 
+@app.route("/home")
+def home():
+    return render_template('/home.html')
+
 @app.route("/getparcours", methods=['GET','POST'])
 def get_path():
     if request.method == 'POST':

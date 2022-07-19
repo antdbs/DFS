@@ -1,0 +1,1 @@
+http://localhost:8002/route?json={"locations":[{"lat": 48.849442,"lon": 2.261198},{"lat": 48.87138948741586,"lon": 2.3008580899468396}],"language": "fr-FR","costing": "pedestrian","directions_options": {"units": "km"}}
