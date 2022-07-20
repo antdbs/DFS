@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-        body {
-            align-items: center;
-            background-color: black;
-            display: flex;
-            justify-content: center;
-            height: 100vh;
-        }
 
-        .form {
-            background-color: #15172b;
-            border-radius: 20px;
-            box-sizing: border-box;
-            height: 830px;
-            padding: 20px;
-            width: 470px;
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+          integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+          crossorigin=""
+    />
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <!-- markerCluster -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+
+    <style>
+
+        body {
+            height: 100vh;
         }
 
         .title {
@@ -101,165 +102,221 @@
         .submit:active {
             background-color: #06b;
         }
+
+        .wrapper, #map {
+            height: 100vh;
+            width: 100%;
+            padding: 0;
+            margin: 0
+        }
+
+        .wrapper {
+            position: relative
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .form {
+            background-color: #15172b;
+            border-radius: 20px;
+            box-sizing: border-box;
+            height: 97%;
+            padding: 20px;
+            width: 450px;
+            position: absolute;
+            z-index: 100000;
+            pointer-events: none;
+            left: 5%;
+            top: 1%
+        }
+
+        .form > * {
+            pointer-events: auto;
+        }
     </style>
 
-    <!--
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
-
-    <script>
-        // This is an example of Leaflet usage; you should modify this for your needs.
-        var map = L.map('map').setView([2.261142, 48.849462], 12);
-        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-        var options = {
-          url: "http://localhost:4000/v1/",
-            autocomplete: true
-        }
-        L.control.geocoder(options).addTo(map);
-    </script>-->
-
     <meta charset="UTF-8">
-    <title>Formulaire</title>
+    <title>Paris GO</title>
 </head>
 <body>
-    <form class="form" action="forward" method="post">
-        <div class="title">
-            <h2>Paris GO</h2>
-        </div>
-        <div class="description">
-            Sélectionner une adresse ainsi que les options souhaitées<br>
-            <ul>
-                <li>lieu d'arrivée</li>
-                <li>durée du trajet</li>
-                <li>mode de transport</li>
-                <li>activités payantes ou non</li>
-                <li>type d'activité (facultatif)</li>
-            </ul>
-        </div>
-        <label class="subtitle">
-            <br>Adresse :<br>
-            <input class="input" type="text" name="adresse" id="adresse" required/>
-        </label><br>
+   <div class="wrapper">
 
-        <table width="100%">
-            <tr>
-                <td>
-                    <label class="subtitle">
-                        <br>Début :<br>
-                        <input class="input" type="datetime-local" name="start_time" required
-                               align="left" min="2022-01-01T00:00" max="2050-12-30T23:59"/>
-                    </label><br>
-                </td>
-                <td>
-                    <label class="subtitle">
-                        <br>Fin :<br>
-                        <input class="input" type="datetime-local" name="end_time" required
-                               align="right" min="2022-01-01T00:00" max="2050-12-31T23:59"/>
-                    </label><br>
-                </td>
-            </tr>
-        </table>
+     <div id="map"></div>
 
-        <label class="subtitle">
-            <br>Mode de transport :<br>
-            <table>
+     <form class="form" action="forward" method="post">
+            <div class="title">
+                <h2>Paris GO</h2>
+            </div>
+            <div class="description">
+                Sélectionner les mots clés souhaités (tous par défaut)<br>
+            </div>
+            <label class="subtitle">
+                <br>Adresse :<br>
+                <input class="input" type="text" name="adresse" id="adresse" required/>
+            </label><br>
+
+            <table width="100%">
                 <tr>
                     <td>
-                        <input type="radio" id="pied" name="transport" value="pied" checked="checked">
-                        <label class="label" for="pied">A pied</label>
+                        <label class="subtitle">
+                            <br>Début :<br>
+                            <input class="input" type="datetime-local" name="start_time" required
+                                   align="left" min="2022-01-01T00:00" max="2050-12-30T23:59"/>
+                        </label><br>
                     </td>
                     <td>
-                        <input type="radio" id="voiture" name="transport" value="voiture">
-                        <label class="label" for="voiture">Voiture</label>
+                        <label class="subtitle">
+                            <br>Fin :<br>
+                            <input class="input" type="datetime-local" name="end_time" required
+                                   align="right" min="2022-01-01T00:00" max="2050-12-31T23:59"/>
+                        </label><br>
                     </td>
                 </tr>
             </table>
-        </label>
 
-        <label class="subtitle">
-            <br>Budget :<br>
-            <table>
-                <tr>
-                    <td>
-                        <input type="radio" id="gratuit" name="budget" value="gratuit" checked="checked">
-                        <label class="label" for="gratuit">Gratuit</label>
-                    </td>
-                    <td>
-                        <input type="radio" id="payant" name="budget" value="payant">
-                        <label class="label" for="payant">Payant</label>
-                    </td>
-                </tr>
-            </table>
-        </label>
+            <label class="subtitle">
+                <br>Mode de transport :<br>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="pied" name="transport" value="pied" checked="checked">
+                            <label class="label" for="pied">A pied</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="voiture" name="transport" value="voiture">
+                            <label class="label" for="voiture">Voiture</label>
+                        </td>
+                    </tr>
+                </table>
+            </label>
 
-        <label class="subtitle">
-            <br>Mot clés :<br>
-            <table align="center" width="100%">
-                <tr>
-                    <td class="td">
-                        <input name ="arts" type="checkbox" id="arts" value="true">
-                        <label class="label" for="arts">Arts</label><br>
+            <label class="subtitle">
+                <br>Budget :<br>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="radio" id="gratuit" name="budget" value="gratuit" checked="checked">
+                            <label class="label" for="gratuit">Gratuit</label>
+                        </td>
+                        <td>
+                            <input type="radio" id="payant" name="budget" value="payant">
+                            <label class="label" for="payant">Payant</label>
+                        </td>
+                    </tr>
+                </table>
+            </label>
 
-                        <input name ="brocante" type="checkbox" id="brocante" value="true">
-                        <label class="label" for="brocante">Brocante</label><br>
+            <label class="subtitle">
+                <br>Mot clés :<br>
+                <table align="center" width="100%">
+                    <tr>
+                        <td class="td">
+                            <input name ="arts" type="checkbox" id="arts" value="true">
+                            <label class="label" for="arts">Arts</label><br>
 
-                        <input name ="humour" type="checkbox" id="humour" value="true">
-                        <label class="label" for="humour">Humour</label><br>
+                            <input name ="brocante" type="checkbox" id="brocante" value="true">
+                            <label class="label" for="brocante">Brocante</label><br>
 
-                        <input name ="sciences" type="checkbox" id="sciences" value="true">
-                        <label class="label" for="sciences">Sciences</label><br>
+                            <input name ="humour" type="checkbox" id="humour" value="true">
+                            <label class="label" for="humour">Humour</label><br>
 
-                        <input name ="musique" type="checkbox" id="musique" value="true">
-                        <label class="label" for="musique">Musique</label><br>
+                            <input name ="sciences" type="checkbox" id="sciences" value="true">
+                            <label class="label" for="sciences">Sciences</label><br>
 
-                        <input name ="cinema" type="checkbox" id="cinema" value="true">
-                        <label class="label" for="cinema">Cinema</label><br>
+                            <input name ="musique" type="checkbox" id="musique" value="true">
+                            <label class="label" for="musique">Musique</label><br>
 
-                        <input name ="sport" type="checkbox" id="sport" value="true">
-                        <label class="label" for="sport">Sport</label><br>
+                            <input name ="cinema" type="checkbox" id="cinema" value="true">
+                            <label class="label" for="cinema">Cinema</label><br>
 
-                        <input name ="loisirs" type="checkbox" id="loisirs" value="true">
-                        <label class="label" for="loisirs">Loisirs</label><br>
+                            <input name ="sport" type="checkbox" id="sport" value="true">
+                            <label class="label" for="sport">Sport</label><br>
 
-                        <input name ="gourmand" type="checkbox" id="gourmand" value="true">
-                        <label class="label" for="gourmand">Gourmand</label><br>
-                    </td>
-                    <td class="td">
-                        <input name ="nature" type="checkbox" id="nature" value="true">
-                        <label class="label" for="nature">Nature</label><br>
+                            <input name ="loisirs" type="checkbox" id="loisirs" value="true">
+                            <label class="label" for="loisirs">Loisirs</label><br>
 
-                        <input name ="histoire" type="checkbox" id="histoire" value="true">
-                        <label class="label" for="histoire">Histoire</label><br>
+                            <input name ="gourmand" type="checkbox" id="gourmand" value="true">
+                            <label class="label" for="gourmand">Gourmand</label><br>
+                        </td>
+                        <td class="td">
+                            <input name ="nature" type="checkbox" id="nature" value="true">
+                            <label class="label" for="nature">Nature</label><br>
 
-                        <input name ="theatre" type="checkbox" id="theatre" value="true">
-                        <label class="label" for="theatre">Théatre</label><br>
+                            <input name ="histoire" type="checkbox" id="histoire" value="true">
+                            <label class="label" for="histoire">Histoire</label><br>
 
-                        <input name ="expo" type="checkbox" id="expo" value="true">
-                        <label class="label" for="expo">Expo</label><br>
+                            <input name ="theatre" type="checkbox" id="theatre" value="true">
+                            <label class="label" for="theatre">Théatre</label><br>
 
-                        <input name ="enfants" type="checkbox" id="enfants" value="true">
-                        <label class="label" for="enfants">Enfants</label><br>
+                            <input name ="expo" type="checkbox" id="expo" value="true">
+                            <label class="label" for="expo">Expo</label><br>
 
-                        <input name ="salon" type="checkbox" id="salon" value="true">
-                        <label class="label" for="salon">Salon</label><br>
+                            <input name ="enfants" type="checkbox" id="enfants" value="true">
+                            <label class="label" for="enfants">Enfants</label><br>
 
-                        <input name ="clubbing" type="checkbox" id="clubbing" value="true">
-                        <label class="label" for="clubbing">Clubbing</label><br>
+                            <input name ="salon" type="checkbox" id="salon" value="true">
+                            <label class="label" for="salon">Salon</label><br>
 
-                        <input name ="conference" type="checkbox" id="conference" value="true">
-                        <label class="label" for="conference">Conference</label><br>
+                            <input name ="clubbing" type="checkbox" id="clubbing" value="true">
+                            <label class="label" for="clubbing">Clubbing</label><br>
 
-                        <input name ="autre" type="checkbox" id="autre" value="true">
-                        <label class="label" for="autre">Autre</label><br>
-                    </td>
-                </tr>
-            </table>
-        </label>
-        <br>
-        <input class="submit" type="submit" value="Valider"/>
-    </form>
+                            <input name ="conference" type="checkbox" id="conference" value="true">
+                            <label class="label" for="conference">Conference</label><br>
+
+                            <input name ="autre" type="checkbox" id="autre" value="true">
+                            <label class="label" for="autre">Autre</label><br>
+                        </td>
+                    </tr>
+                </table>
+            </label>
+            <br>
+            <input class="submit" type="submit" value="Valider"/>
+        </form>
+   </div>
+
 </body>
 </html>
+
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin="">
+</script>
+
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+
+<script>
+    var map = L.map('map').setView([48.849442, 2.261198], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    var markers = L.markerClusterGroup({ preferCanvas: true });
+
+    {% for item in markers %}
+        markers.addLayer(
+            L.marker([{{item.coordonnees}}]).bindPopup(
+                "<h3>{{item.id}} - {{item.titre}}</h3>" +
+                "<h4>Chapau</h4>" +
+                "<p><strong>Adresse :</strong> adresse + code postal + ville</p>" +
+                "<p><strong>Date debut :</strong> date</p>" +
+                "<p><strong>Date fin :</strong> date</p>" +
+                "<p><strong>Prix :</strong> type_prix + detail_prix</p>" +
+                "<div className='container'>" +
+                    "<span><a href='https://www.twitter.com'><i class='fa fa-envelope'></i></a></span>&emsp;" +
+                    "<span><a href='https://www.twitter.com'><i class='fa fa-phone'></i></a></span>&emsp;" +
+                    "<span><a href='https://www.twitter.com'><i class='fa fa-desktop'></i></a></span>&emsp;" +
+                    "<span><a href='https://www.twitter.com'><i class='fa fa-twitter'></i></a></span>&emsp;" +
+                    "<span><a href='https://www.twitter.com'><i class='fa fa-facebook-f'></i></a></span>" +
+                "</div>"
+            )
+        );
+    {% endfor %}
+
+    map.addLayer(markers);
+</script>

@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import json
 
 ## API flask
 # input: (latitude, longitude)
@@ -18,7 +19,10 @@ app = Flask(__name__)
 
 @app.route("/")
 def form():
-    return render_template('/form.html')
+    f = open('C:/Users/33660/PycharmProjects/DFS/activites.json', encoding='utf-8')
+    data = json.load(f)
+
+    return render_template('/form.html', markers=data)
 
 
 def try_categories(request, name):
